@@ -1,0 +1,73 @@
+
+
+
+# reranking with BERT: its impractical to apply inference to every document in a corpus with respect to a query, so we rerank a list of candidates
+# in a typical end-to-end system, we get the candidates from classical IR systems such as the ones using BM25 ranking
+https://cs.uwaterloo.ca/~jimmylin/publications/Nogueira_etal_FindingsEMNLP2020.pdf
+
+# BERTserini
+# At inference time, for retrieved articles, we apply the BERT reader paragraph by paragraph. For
+# retrieved paragraphs, we apply inference over the
+# entire paragraph. For retrieved sentences, we apply inference over the entire sentence. In all cases,
+# the reader selects the best text span and provides a score
+
+# paragraph level inference is more effective than article and sentence level infernece
+https://arxiv.org/pdf/1902.01718.pdf
+
+# a well-tuned anserini beats new neural models
+https://sigir.org/wp-content/uploads/2019/01/p040.pdf
+
+# BERT's effectiveness in document ranking
+# pretraining on domain text improves effectiveness
+# this is essentially a multi-stage ranking pipeline
+# the pipeline is deployed by Bing web search engine and Alibaba's ecommerce search engine
+# stage 1: pyserini IR using BM25; we should optimize for recall to get as many documents as possible
+# stage 2: monoBERT: encode query to 64 tokens, encode context such that query+cantext+separator tokens have 512 tokens in total
+#          returns top-ki results
+# stage 3: duoBERT: 
+
+# bm25+bert-large > bm25+rm3 > bm25
+https://arxiv.org/pdf/1910.14424.pdf
+
+
+# albert
+https://arxiv.org/pdf/1909.11942.pdf
+
+
+# model generated confidence score for the spans are not meant to be compared across paragraphs
+# they will perform poorly if such comparison is made
+
+# to allow comparison across paragraphs, we remove the final softmax layer over different answer spans
+# this also explains how to calculate the confidence score from BERT and IR
+
+# We adapt this model to the multi-paragraph setting by using the un-normalized and un-exponentiated
+# (i.e., before the softmax operator is applied) score given to each span as a measure of the model’s
+# confidence. For the boundary-based models we use here, a span’s score is the sum of the start and
+# end score given to its start and end token. At test time we run the model on each paragraph and 
+# select the answer span with the highest confidence. This is the approach taken by Chen et al. (2017).
+# Applying this approach without altering how
+#
+# Applying this approach without altering how the model is trained is, however, a gamble; the
+# training objective does not require these confidence scores to be comparable between paragraphs. 
+# Our experiments in Section 5 show that in practice these models can be very poor at providing 
+# good confidence scores. Table 1 shows some qualitative examples of this phenomenon
+
+We hypothesize that there are two key reasons a
+model’s confidence scores might not be well calibrated. First, for models trained with the softmax objective, the pre-softmax scores for all spans
+can be arbitrarily increased or decreased by a constant value without changing the resulting softmax
+probability distribution. As a result, nothing prevents models from producing scores that are arbitrarily all larger or all smaller for one paragraph
+than another. Second, if the model only sees paragraphs that contain answers, it might become too
+confident in heuristics or patterns that are only effective when it is known a priori that an answer
+exists. For example, in Table 1 we observe that the
+model will assign high confidence values to spans
+that strongly match the category of the answer,
+even if the question words do not match the context. This might work passably well if an answer
+is present, but can lead to highly over-confident
+extractions in other cases. Similar kinds of errors
+have been observed when distractor sentences are
+added to the context (Jia and Liang, 2017).
+
+
+# This is only solved if we train a bert model ourselves with some adjustments
+
+https://arxiv.org/pdf/1710.10723.pdf

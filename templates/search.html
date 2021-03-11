@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Search</title>
+    <link rel="stylesheet" href="/static/css/search_style.css" type="text/css">
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+
+    
+    <div class='search-box'>
+		<form action="{{ url_for("search")}}" method="post"> 
+<!--			<label for="question">Your question:</label> -->
+			<input type="text" id="question" name="question" placeholder="Please enter your question">
+			<button type="submit">Search</button> 
+    	</form>
+    </div>
+
+    {% endblock %}
+  </body>
+</html>

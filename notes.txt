@@ -1,0 +1,18 @@
+key consdierations
+0. Architecture consideration
+- BM25 for retrieval because bert on all documents is impossibly costly
+- BERT rerank because BM25 is not as good as ranking the documents
+- More layers of BERT can be added for better ranking
+
+1. rerank model choice
+
+2. score consideration
+- combination of BM25 and bert score with more weights on bert
+
+2. batch processing on GPU
+
+3. Truncation vs doc_stride when predicting
+
+4. Number of outputs returned
+
+5. 
