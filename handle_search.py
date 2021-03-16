@@ -1,9 +1,4 @@
 import os
-import json
-
-import pandas as pd
-
-import info_retriever
 
 from plot_table import plot_table_to_html
 
@@ -13,33 +8,34 @@ path = 'C:\\Users\\roy79\\Desktop\\Research\\question answering system\\code\\'
 os.chdir(path)
 
 
-# load the searcher before running the server
-os.environ['ANSERINI_CLASSPATH'] = "C:/Users/roy79/anaconda3/Lib/site-packages/pyserini/resources/jars/"
-doc_index = 'trec-covid-r5-full-text'
-search_method = 'simple'
-searcher = info_retriever.Searcher(doc_index,search_method)
 
+#question = "Is covid transmitted by aerisol, droplets, food, close contact, fecal matter, or water"
 
-
-def handle_search(question):
+def handle_search(searcher, question, db):
     
-    start = datetime.now()
-#    question = "Is covid transmitted by aerisol, droplets, food, close contact, fecal matter, or water"
     hits = searcher.search(question)
-    len(hits)    
     results = searcher.get_results(hits)
+
+    start = datetime.now()
     results = searcher.update_albert_rerank()
+    print('rerank took:', datetime.now()-start)
+
+    plot_table_to_html(results, db)
     
-    plot_table_to_html(results)
-    
-    print(datetime.now()-start)
     return
 
 
-
-
-
-
+# =============================================================================
+# for DEBUG
+# if __name__=="__main__":
+#     
+#     searcher_covid_simple = SimpleSearcher.from_prebuilt_index('trec-covid-r5-paragraph')
+#     searcher = info_retriever.Searcher(searcher_covid_simple)
+#     
+#     question = 'Is covid transmitted by aerisol, droplets, food, close contact, fecal matter, or water'
+#     handle_search(searcher, question, 'covid')
+# 
+# =============================================================================
 
 
 

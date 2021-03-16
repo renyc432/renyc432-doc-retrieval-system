@@ -16,7 +16,9 @@
     padding-bottom:20px
 }
 
-
+.mystle td, th{
+    width: 20px;
+}
 
 .mystyle tbody tr:nth-child(odd) td {
     background-color: #E0FFFF;

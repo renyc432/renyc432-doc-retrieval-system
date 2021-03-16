@@ -25,7 +25,7 @@ import webbrowser
 # =============================================================================
 
 
-html_string = '''
+html_string_covid = '''
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
@@ -53,14 +53,54 @@ html_string = '''
 
 '''
 
+html_string_wiki = '''
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Search</title>
+        <link rel="stylesheet" href="/static/css/search_result_style.css" type="text/css">
+        <link rel="stylesheet" href="{{{{ url_for('static',     filename='css/df_style.css')}}}}">
+    </head>
+    <body>
+        {{% extends "template.html" %}}
+        {{% block content %}}
 
-def plot_table_to_html(df):
+        <div class='search-box'>
+		    <form action="{{{{ url_for("search_wiki")}}}}" method="post"> 
+		      	<input type="text" id="question" name="question" placeholder="Please enter your question">
+			    <button type="submit">Search</button> 
+    	    </form>
+        </div>
+        <div class='search-result'>
+            {table}
+        </div>
+    {{% endblock %}}
+  </body>
+</html>
+
+'''
+
+
+def plot_table_to_html(df, db='covid'):
 
     pd.set_option('colheader_justify', 'center')
     pd.set_option('display.max_colwidth', 20)
     
-    with open("./templates/output.html", "w", encoding="utf-8") as out:
-        out.write(html_string.format(table=df.to_html(classes='mystyle', render_links=True, escape=False, justify='left')))
+    if db=='covid':
+        with open("./templates/output.html", "w", encoding="utf-8") as out:
+            out.write(html_string_covid.format(table=df.to_html(classes='mystyle', 
+                                                          render_links=True, 
+                                                          escape=False, 
+                                                          justify='left',
+                                                          index=False)))
+    elif db=='wiki':
+        with open("./templates/output_wiki.html", "w", encoding="utf-8") as out:
+            out.write(html_string_wiki.format(table=df.to_html(classes='mystyle', 
+                                                          render_links=True, 
+                                                          escape=False, 
+                                                          justify='left',
+                                                          index=False)))
 
 
 def open_in_browser(file):

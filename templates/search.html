@@ -4,15 +4,22 @@
     <meta charset="utf-8">
     <title>Search</title>
     <link rel="stylesheet" href="/static/css/search_style.css" type="text/css">
+    <style> 
+    	body {
+    		background-image:url("/static/img/tablets.jpg");
+    		background-repeat: no-repeat;
+			  background-attachment: fixed;
+			  background-size: cover;
+    	}
+    </style>
+
   </head>
   <body>
     {% extends "template.html" %}
     {% block content %}
 
-    
     <div class='search-box'>
-		<form action="{{ url_for("search")}}" method="post"> 
-<!--			<label for="question">Your question:</label> -->
+		<form action="{{ url_for('search')}}" method="post"> 
 			<input type="text" id="question" name="question" placeholder="Please enter your question">
 			<button type="submit">Search</button> 
     	</form>
