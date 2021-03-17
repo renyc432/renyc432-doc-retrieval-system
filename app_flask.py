@@ -58,15 +58,9 @@ def search_wiki():
 def about():
     return render_template("about.html")
 
-
 @app.route("/test-css")
 def test_css():
     return render_template("test-css.html")
-
-
-@app.route("/search-result")
-def search_result():
-    return render_template("search-result.html")
 
 
 if __name__=="__main__":

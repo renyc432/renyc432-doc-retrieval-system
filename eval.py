@@ -37,7 +37,6 @@ with open('squad_train.json', 'w') as out:
 # =============================================================================
 
 from pyserini.search import SimpleSearcher
-
 import info_retriever
 
 searcher_squad = SimpleSearcher('indexes/squad_train')
@@ -85,7 +84,7 @@ import pandas as pd
 questions_with_answer = [temp for temp in questions if temp['answers'] != []]
 
 random.seed(87325)
-test_questions = random.choices(questions_with_answer,k=100)
+test_questions = random.choices(questions_with_answer,k=5000)
 # eliminate questions with no answers
 
 searcher_squad = SimpleSearcher('indexes/squad_train')
